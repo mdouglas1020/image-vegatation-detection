@@ -12,17 +12,21 @@ hsv = np.array(hsv_im)
 hue = hsv[:,:,0]
 sat = hsv[:,:,1]
 val = hsv[:,:,2]
-xsize, ysize = hsv.size # get the dimensionality
+xsize, ysize = hue.shape # get the dimensionality
+lo,hi = 40, 200
+lo = int((lo * 255) / 360)
+hi = int((hi * 255) / 360)
 
 for i in range(xsize):
-  for j in range(ysize):
-      if( hue[i,j] > 95 or hue[i, j] < 80):
-          val[i, j] = 0
-          
+    for j in range(ysize):
+        if( sat[i,j] > 20):
+            if( hue[i,j] >= lo and hue[i,j] <= hi ):
+                val[i, j] = 0
 
+            
+        
+          
 hsv_image = Image.merge("HSV", (Image.fromarray(hue), Image.fromarray(sat), Image.fromarray(val)))
 rbg_final = hsv_image.convert("RGB")
 rbg_final.show()
 
-# print is how we display statements to the user (text)
-#print( "Image size is " + str(pil_im.size) ) 
